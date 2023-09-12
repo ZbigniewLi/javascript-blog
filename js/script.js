@@ -4,8 +4,8 @@ const templates = {
   articleLink: Handlebars.compile(document.querySelector('#template-article-link').innerHTML),
   tagLink: Handlebars.compile(document.querySelector('#template-tag-link').innerHTML),
   authorLink: Handlebars.compile(document.querySelector('#template-author-link').innerHTML),
-  tagCloudLink: Handlebars.compile(document.querySelector('#templates-tagCloud-Link').innerHTML),
-  authorCloudLink: Handlebars.compile(document.querySelector('#templates-author-Link').innerHTML),
+  tagCloudLink: Handlebars.compile(document.querySelector('#template-tag-cloud-link').innerHTML),
+  authorCloudLink: Handlebars.compile(document.querySelector('#template-author-cloud-link').innerHTML),
 }
 
 const titleClickHandler = function (event) {
@@ -59,7 +59,7 @@ const generateTitleLinks = function (customSelector = '') {
     const linkHTML = templates.articleLink(linkHTMLData);
 
     /* insert link into titleList */
-    titles.innerHTML = titles.innerHTML + html
+    titles.innerHTML = titles.innerHTML + linkHTML
   }
   const links = document.querySelectorAll('.titles a');
 
@@ -130,6 +130,7 @@ function generateTags() {
       //html += '<li><a href="#tag-' + tag + '"><span>' + tag + '</span></a></li>';
       const linkHTMLData = {id: tag, title: tag};
       const linkHTML = templates.tagLink(linkHTMLData);
+      html = html + linkHTML;
       /* check if this link is NOT already in allAuthors */
       if (!allTags[tag]) {
         /* [NEW] add tag to allTags object */
@@ -238,7 +239,8 @@ function generateAuthors() {
     const articleAuthor = article.getAttribute('data-author');
     /* generate HTML of the link */
     //html += '<li><a href="#author-' + articleAuthor + '"><span>' + articleAuthor + '</span></a></li>';
-    const authorHTML = {id: articleAuthor, title: articleAuthor};
+    const authorHTML = templates.authorLink({id: articleAuthor, title: articleAuthor});
+    html = html + authorHTML;
     
     /* insert HTML of all the links into the tags wrapper */
     authorsWrapper.innerHTML = html;
